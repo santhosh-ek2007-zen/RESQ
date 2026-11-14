@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Benchmark Suite & CSV Export — RESQ{% endblock %}
+
+{% block content %}
+<main class="view-full">
+
+  <!-- ── Benchmark Controls Card ──────────────────────────────── -->
+  <div class="bench-card">
+    <div class="section-header" style="margin-bottom:16px">
+      <div class="section-title" style="font-size:13px">
+        <i data-lucide="table"></i>
+        Rigorous Algorithm Benchmarking
+      </div>
+      <div>
+        <a href="/api/results.csv" id="csv-btn" class="btn btn-outline btn-sm"
+           style="text-decoration:none" aria-disabled="true">
+          <i data-lucide="download"></i>
+          <span>Export Dataset (CSV)</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="bench-controls-bar">
+
+      <!-- Target Selection -->
+      <div>
+        <label>Benchmark Target</label>
+        <div style="display:flex;gap:14px;margin-top:6px">
+          <label class="check-item">
+            <input type="radio" name="bench-mode" value="search" checked>
+            <span>Path Search</span>
+          </label>
+          <label class="check-item">
+            <input type="radio" name="bench-mode" value="optimise">
+            <span>Tour Optimizer</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Algorithms Selection -->
+      <div>
+        <label>Algorithms to Profile</label>
+        <div id="bench-algos-search" class="check-list-scroll" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px;max-height:85px">
+          <label class="check-item"><input type="checkbox" value="astar" checked> A* Search</label>
+          <label class="check-item"><input type="checkbox" value="ida_star" checked> IDA* Search</label>
+          <label class="check-item"><input type="checkbox" value="bfs" checked> BFS</label>
+          <label class="check-item"><input type="checkbox" value="iddfs" checked> IDDFS</label>
+          <label class="check-item"><input type="checkbox" value="greedy" checked> Greedy Best-First</label>
+          <label class="check-item"><input type="checkbox" value="dfs" checked> DFS</label>
+        </div>
+
+        <div id="bench-algos-opt" class="check-list-scroll" style="display:none;grid-template-columns:repeat(2, 1fr);gap:4px;max-height:85px">
+          <label class="check-item"><input type="checkbox" value="simulated_annealing" checked> Simulated Annealing</label>
+          <label class="check-item"><input type="checkbox" value="random_restart" checked> RR Hill Climbing</label>
+          <label class="check-item"><input type="checkbox" value="hill_climbing" checked> Hill Climbing</label>
+          <label class="check-item"><input type="checkbox" value="random_walk" checked> Random Walk</label>
+        </div>
+      </div>
+
+      <!-- Sample Counts -->
+      <div>
+        <div id="bench-repeats-row">
+          <label for="bench-repeats">Runs Per Pair</label>
+          <input type="number" id="bench-repeats" value="5" min="1" max="20" />
+          <span class="input-hint">Repeated trials for timing stability</span>
+        </div>
+
+        <div id="bench-seeds-row" style="display:none">
+          <label for="bench-seeds">Random Seeds Count</label>
+          <input type="number" id="bench-seeds" value="15" min="1" max="50" />
+          <span class="input-hint">Distinct seeds for stochastic validity</span>
+        </div>
+      </div>
+
+      <!-- Execute Action -->
+      <div>
+        <button type="button" class="btn btn-primary btn-full" id="btn-benchmark">
+          <i data-lucide="play"></i>
+          <span>Execute Trials</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Tabular Summary Matrix ───────────────────────────────── -->
+  <div class="bench-card" style="flex:1;display:flex;flex-direction:column">
+    <div class="section-header" style="margin-bottom:12px">
+      <div class="section-title">
+        <i data-lucide="activity"></i>
+        Aggregated Benchmark Statistics
+      </div>
+    </div>
+
+    <div class="table-wrapper" style="flex:1">
+      <div id="bench-summary-table">
+        <div class="empty-state">
+          <i data-lucide="clipboard-list"></i>
+          <p>Configure parameters above and click <b>Execute Trials</b> to compute statistical metrics and exportable CSV records.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+{% endblock %}

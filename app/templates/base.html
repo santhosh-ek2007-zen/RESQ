@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}RESQ — Disaster Route Optimization Platform{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <!-- Local Vendor Scripts with CDN Fallbacks -->
+  <script src="/static/vendor/cytoscape.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js';"></script>
+  <script src="/static/vendor/lucide.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/lucide@latest';"></script>
+</head>
+<body>
+
+  <!-- ══ NAVIGATION BAR ═══════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="brand-group">
+      <a href="/network" class="brand-link">
+        <span class="brand-symbol">
+          <i data-lucide="route"></i>
+        </span>
+        <div class="brand-text">
+          <span class="brand-name">RESQ</span>
+          <span class="brand-tag">Disaster Logistics Engine</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="main-nav" aria-label="Main Navigation">
+      <ul class="nav-menu">
+        <li>
+          <a href="/network" class="nav-item {% if active_page == 'network' %}active{% endif %}">
+            <i data-lucide="network"></i>
+            <span>City Network</span>
+          </a>
+        </li>
+        <li>
+          <a href="/search" class="nav-item {% if active_page == 'search' %}active{% endif %}">
+            <i data-lucide="navigation"></i>
+            <span>Route Finder</span>
+          </a>
+        </li>
+        <li>
+          <a href="/optimize" class="nav-item {% if active_page == 'optimize' %}active{% endif %}">
+            <i data-lucide="milestone"></i>
+            <span>Tour Optimizer</span>
+          </a>
+        </li>
+        <li>
+          <a href="/compare" class="nav-item {% if active_page == 'compare' %}active{% endif %}">
+            <i data-lucide="git-compare"></i>
+            <span>Comparison</span>
+          </a>
+        </li>
+        <li>
+          <a href="/benchmark" class="nav-item {% if active_page == 'benchmark' %}active{% endif %}">
+            <i data-lucide="table"></i>
+            <span>Benchmark & Export</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div id="status-banner" role="status" aria-live="polite"></div>
+      <button type="button" class="btn btn-outline btn-sm" id="btn-global-reset" onclick="resetScenario()" title="Restore all network roads to open status">
+        <i data-lucide="rotate-ccw"></i>
+        <span>Reset Grid</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ MAIN VIEW CONTENT ═══════════════════════════════════════ -->
+  {% block content %}{% endblock %}
+
+  <!-- ══ JAVASCRIPT LOGIC ════════════════════════════════════════ -->
+  <script src="/static/js/graph.js"></script>
+  <script src="/static/js/app.js"></script>
+  {% block extra_scripts %}{% endblock %}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

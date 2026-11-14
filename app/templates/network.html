@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}City Network & Infrastructure — RESQ{% endblock %}
+
+{% block content %}
+<main class="view-container view-split-left-sidebar">
+
+  <!-- ── Left Panel: Road Controls & Inventory ─────────────── -->
+  <aside class="panel-sidebar">
+
+    <!-- Topology State Summary -->
+    <div class="panel-section">
+      <div class="section-header">
+        <span class="section-title">
+          <i data-lucide="activity"></i>
+          Disaster Network Status
+        </span>
+        <span class="pill pill-info" id="stat-version">v0</span>
+      </div>
+
+      <div class="stat-summary-grid">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Nodes</div>
+          <div class="stat-cell-value" id="stat-nodes">11</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Total Roads</div>
+          <div class="stat-cell-value" id="stat-roads">20</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Open</div>
+          <div class="stat-cell-value emerald" id="stat-open">20</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Blocked</div>
+          <div class="stat-cell-value crimson" id="stat-blocked">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Road Closure Management -->
+    <div class="panel-section">
+      <div class="section-header">
+        <span class="section-title">
+          <i data-lucide="shield-alert"></i>
+          Segment Obstruction Controls
+        </span>
+      </div>
+      <p class="section-desc">
+        Click an edge on the graph to populate endpoints, or select below to simulate physical road blockages:
+      </p>
+
+      <div class="form-row">
+        <div>
+          <label for="road-source">Source Node</label>
+          <select id="road-source"></select>
+        </div>
+        <div>
+          <label for="road-target">Target Node</label>
+          <select id="road-target"></select>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <button type="button" class="btn btn-danger btn-full" id="btn-block">
+          <i data-lucide="ban"></i>
+          <span>Block Segment</span>
+        </button>
+        <button type="button" class="btn btn-success btn-full" id="btn-reopen">
+          <i data-lucide="check"></i>
+          <span>Reopen Segment</span>
+        </button>
+      </div>
+
+      <button type="button" class="btn btn-outline btn-full btn-sm" id="btn-reset">
+        <i data-lucide="rotate-ccw"></i>
+        <span>Reset Network to Fully Open</span>
+      </button>
+    </div>
+
+    <!-- Road Inventory Table -->
+    <div class="panel-section flex-1">
+      <div class="section-header">
+        <span class="section-title">
+          <i data-lucide="list"></i>
+          Road Segment Catalog
+        </span>
+      </div>
+
+      <div class="table-wrapper scrollable-y" style="flex:1">
+        <table class="app-table">
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>Weight</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="roads-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── Right: Large Viewport Graph Canvas ────────────────── -->
+  <section class="graph-viewport">
+    <div id="cy"></div>
+
+    <!-- Floating Actions Toolbar -->
+    <div class="graph-actions-bar">
+      <button type="button" class="graph-btn" onclick="zoomIn()" title="Zoom In">
+        <i data-lucide="zoom-in"></i>
+        <span>Zoom In</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="zoomOut()" title="Zoom Out">
+        <i data-lucide="zoom-out"></i>
+        <span>Zoom Out</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="fitGraph()" title="Fit Viewport">
+        <i data-lucide="maximize-2"></i>
+        <span>Fit</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="resetGraph()" title="Reset Graph View">
+        <i data-lucide="rotate-ccw"></i>
+        <span>Reset</span>
+      </button>
+    </div>
+
+    <!-- Graph Legend Box -->
+    <div class="graph-legend-box">
+      <div class="legend-entry">
+        <div class="legend-swatch-node" style="background:#1a2230;border-color:#334155"></div>
+        <span>Location Node</span>
+      </div>
+      <div class="legend-entry">
+        <div class="legend-swatch-line" style="background:#475569"></div>
+        <span>Open Road</span>
+      </div>
+      <div class="legend-entry">
+        <div class="legend-swatch-line" style="background:#ef4444;border-top:1px dashed #ef4444"></div>
+        <span>Blocked Road</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+{% endblock %}

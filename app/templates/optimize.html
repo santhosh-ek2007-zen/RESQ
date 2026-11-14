@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Tour Optimizer — RESQ{% endblock %}
+
+{% block content %}
+<main class="view-container view-split-right-sidebar">
+
+  <!-- ── Left / Center: Dominant Graph Viewport ─────────────── -->
+  <section class="graph-viewport">
+    <div id="cy"></div>
+
+    <!-- Floating Actions Toolbar -->
+    <div class="graph-actions-bar">
+      <button type="button" class="graph-btn" onclick="zoomIn()" title="Zoom In">
+        <i data-lucide="zoom-in"></i>
+        <span>Zoom In</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="zoomOut()" title="Zoom Out">
+        <i data-lucide="zoom-out"></i>
+        <span>Zoom Out</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="fitGraph()" title="Fit Viewport">
+        <i data-lucide="maximize-2"></i>
+        <span>Fit</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="resetGraph()" title="Reset Graph View">
+        <i data-lucide="rotate-ccw"></i>
+        <span>Reset</span>
+      </button>
+    </div>
+
+    <!-- Graph Legend Box -->
+    <div class="graph-legend-box">
+      <div class="legend-entry">
+        <div class="legend-swatch-node" style="background:#1f2937;border-color:#f59e0b"></div>
+        <span>Operations Base</span>
+      </div>
+      <div class="legend-entry">
+        <div class="legend-swatch-node" style="background:#064e3b;border-color:#10b981"></div>
+        <span>Target Incident Stop</span>
+      </div>
+      <div class="legend-entry">
+        <div class="legend-swatch-line" style="background:#10b981;height:3px;border-top:1px dashed #10b981"></div>
+        <span>Optimized Tour Route</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Right Sidebar: Optimization Controls & Matrix ──────── -->
+  <aside class="panel-sidebar border-left">
+
+    <!-- Configuration Section -->
+    <div class="panel-section">
+      <div class="section-header">
+        <span class="section-title">
+          <i data-lucide="milestone"></i>
+          Multi-Stop Tour Planner
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="sel-base">Rescue Operations Base</label>
+        <select id="sel-base"></select>
+        <span class="input-hint">Tour begins and terminates at this base hub</span>
+      </div>
+
+      <div class="form-group">
+        <label>Affected Incident Locations (1 to 8)</label>
+        <div class="check-list-scroll" id="opt-locations"></div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="sel-opt-algorithm">Optimization Method</label>
+          <select id="sel-opt-algorithm">
+            <option value="simulated_annealing">Simulated Annealing</option>
+            <option value="random_restart">Random-Restart HC</option>
+            <option value="hill_climbing">Steepest Hill Climbing</option>
+            <option value="random_walk">Random Walk (Baseline)</option>
+          </select>
+        </div>
+        <div>
+          <label for="opt-seed">RNG Seed</label>
+          <input type="number" id="opt-seed" value="42" min="0" max="99999" />
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-full" id="btn-optimise">
+        <i data-lucide="sparkles"></i>
+        <span>Optimize Visiting Order</span>
+      </button>
+    </div>
+
+    <!-- Optimization Results & Matrix Section -->
+    <div class="panel-section flex-1">
+      <div class="section-header">
+        <span class="section-title">
+          <i data-lucide="layers"></i>
+          Tour Solution
+        </span>
+      </div>
+
+      <div id="opt-result">
+        <div class="empty-state">
+          <i data-lucide="map-pin"></i>
+          <p>Select target incident locations and click <b>Optimize Visiting Order</b> to resolve the multi-stop logistics tour.</p>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+</main>
+{% endblock %}

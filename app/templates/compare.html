@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Algorithm Comparison — RESQ{% endblock %}
+
+{% block content %}
+<main class="view-container view-split-right-sidebar">
+
+  <!-- ── Left / Center: Dominant Graph Viewport ─────────────── -->
+  <section class="graph-viewport">
+    <div id="cy"></div>
+
+    <!-- Floating Actions Toolbar -->
+    <div class="graph-actions-bar">
+      <button type="button" class="graph-btn" onclick="zoomIn()" title="Zoom In">
+        <i data-lucide="zoom-in"></i>
+        <span>Zoom In</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="zoomOut()" title="Zoom Out">
+        <i data-lucide="zoom-out"></i>
+        <span>Zoom Out</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="fitGraph()" title="Fit Viewport">
+        <i data-lucide="maximize-2"></i>
+        <span>Fit</span>
+      </button>
+      <button type="button" class="graph-btn" onclick="resetGraph()" title="Reset Graph View">
+        <i data-lucide="rotate-ccw"></i>
+        <span>Reset</span>
+      </button>
+    </div>
+
+    <!-- Graph Legend Box -->
+    <div class="graph-legend-box">
+      <div class="legend-entry">
+        <div class="legend-swatch-node" style="background:#1a2230;border-color:#334155"></div>
+        <span>Location Node</span>
+      </div>
+      <div class="legend-entry">
+        <div class="legend-swatch-line" style="background:#3b82f6;height:3px"></div>
+        <span>Active Inspected Algorithm Route (Click Row Below)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Right Sidebar: Comparison Setup & Evaluation Table ─── -->
+  <aside class="panel-sidebar border-left">
+
+    <!-- Scenario Setup Section -->
+    <div class="panel-section">
+      <div class="section-header">
+        <span class="section-title">
+          <i data-lucide="git-compare"></i>
+          Compare Algorithms Side-by-Side
+        </span>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="sel-start">Origin</label>
+          <select id="sel-start"></select>
+        </div>
+        <div>
+          <label for="sel-destination">Destination</label>
+          <select id="sel-destination"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="sel-heuristic">Heuristic Function</label>
+        <select id="sel-heuristic">
+          <option value="euclidean">Scaled Euclidean Distance</option>
+          <option value="zero">Zero Heuristic (Uniform-Cost)</option>
+        </select>
+      </div>
+
+      <div class="form-group last">
+        <label>Algorithms to Evaluate</label>
+        <div class="check-list-scroll" id="cmp-algo-checks">
+          <label class="check-item"><input type="checkbox" value="astar" checked> A* Search <span
+              class="pill-opt">(Optimal)</span></label>
+          <label class="check-item"><input type="checkbox" value="ida_star" checked> IDA* Search <span
+              class="pill-opt">(Optimal)</span></label>
+          <label class="check-item"><input type="checkbox" value="bfs" checked> BFS <span class="pill-few">(Fewest
+              Hops)</span></label>
+          <label class="check-item"><input type="checkbox" value="iddfs" checked> IDDFS <span class="pill-few">(Fewest
+              Hops)</span></label>
+          <label class="check-item"><input type="checkbox" value="greedy" checked> Greedy Best-First <span
+              class="pill-none">(Heuristic)</span></label>
+          <label class="check-item"><input type="checkbox" value="dfs" checked> DFS <span
+              class="pill-none">(Uninformed)</span></label>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-full" id="btn-compare">
+        <i data-lucide="zap"></i>
+        <span>Execute Head-to-Head Comparison</span>
+      </button>
+    </div>
+
+    <!-- Results Table Section -->
+    <div class="panel-section flex-1">
+      <div class="section-header">
+        <span class="section-title">
+          <i data-lucide="sliders"></i>
+          Performance Matrix
+        </span>
+        <span class="input-hint" style="margin:0">Click row to preview on map</span>
+      </div>
+
+      <div class="table-wrapper scrollable-y" style="flex:1">
+        <table class="app-table">
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Status</th>
+              <th>Cost</th>
+              <th>Time</th>
+              <th>Explored</th>
+              <th>Valid</th>
+            </tr>
+          </thead>
+          <tbody id="cmp-tbody">
+            <tr>
+              <td colspan="6" style="text-align:center;padding:32px 0;color:var(--text-dim)">
+                Select endpoints above and click <b>Execute Head-to-Head Comparison</b>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </aside>
+
+</main>
+{% endblock %}
